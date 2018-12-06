@@ -53,7 +53,7 @@ namespace Chess_and_8_Queens
             int rowLenght = (board.Length / board.GetLength(0));
             int[,] temp = new int[columnLenght, rowLenght];
 
-            for (int i = 0; i < rowLenght; i++)
+            for (int i = 0; i < columnLenght; i++)
             {
                 for (int j = 0; j < columnLenght; j++)
                 {
@@ -176,14 +176,15 @@ namespace Chess_and_8_Queens
         static int[,] CreateNewCardonates(int[,] arr)
         {
             Random rnd = new Random();
-            List<int> lsNumbers = GetArrNumbers(1, (arr.GetLength(0) + 1)).ToList();
+            int columnLenght = board.GetLength(0);
+            int rowLenght = (board.Length / board.GetLength(0));
+            List<int> lsNumbers = GetArrNumbers(1, (rowLenght + 1)).ToList();
 
-            for (int i = 0; i < arr.GetLength(0); i++)
+            for (int i = 0; i < columnLenght; i++)
             {
                 int newNumber = rnd.Next(1, lsNumbers.Count + 1);
                 arr[i, (lsNumbers[newNumber - 1] - 1)] = lsNumbers[newNumber - 1];
                 lsNumbers.RemoveAt((newNumber - 1));
-
             }
             return arr;
         }
@@ -210,7 +211,7 @@ namespace Chess_and_8_Queens
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 Console.Write($" {arr.GetLength(0) - i} ");
-                for (int j = 0; j < arr.GetLength(0); j++)
+                for (int j = 0; j < (arr.Length / arr.GetLength(0)); j++)
                 {
                     if (arr[i, j] != 0)
                         Console.Write(" @ ");
