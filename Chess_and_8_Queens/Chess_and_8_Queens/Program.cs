@@ -6,10 +6,11 @@ namespace Chess_and_8_Queens
 {
     class Program
     {
+        static List<int[,]> lsBoards = new List<int[,]>();
+        static int[,] board;
+
         public static void Main(string[] args)
         {
-            int[,] board;
-            List<int[,]> ls = new List<int[,]>();
             Console.WriteLine($"Start Time {DateTime.Now}");
 
             do
@@ -17,26 +18,19 @@ namespace Chess_and_8_Queens
                 board = new int[8, 8];
                 board = CreateNewCardonates(board);
 
-                if ((!IsCollisionsWithOtherQueens(board) && ls.Count == 0) || (!ComparesATwo_DimensionalArrayWithArrays(ls, board) && !IsCollisionsWithOtherQueens(board)))
+                if ((!IsCollisionsWithOtherQueens(board) && lsBoards.Count == 0) || (!ComparesATwo_DimensionalArrayWithArrays(lsBoards, board) && !IsCollisionsWithOtherQueens(board)))
                 {
-                    ls.Add(board);
-                    Console.Write(new string('=', 28));
-                    Console.WriteLine($"-> {ls.Count}");
+                    lsBoards.Add(board);
                     Print(board);
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    int[,] tempot = DeployBoard(ls[ls.Count - 1]);
+
+                    int[,] tempot = DeployBoard(lsBoards[lsBoards.Count - 1]);
                     for (int i = 0; i < 3; i++)
                     {
-                        if (!ComparesATwo_DimensionalArrayWithArrays(ls, tempot))
+                        if (!ComparesATwo_DimensionalArrayWithArrays(lsBoards, tempot))
                         {
-                            ls.Add(tempot);
+                            lsBoards.Add(tempot);
                             tempot = DeployBoard(tempot);
-                            Console.Write(new string('=', 28));
-                            Console.WriteLine($"-> {ls.Count}");
-                            Print(ls[(ls.Count - 1)]);
-                            Console.WriteLine();
-                            Console.WriteLine();
+                            Print(lsBoards[(lsBoards.Count - 1)]);
                         }
                         else
                             tempot = DeployBoard(tempot);
@@ -44,7 +38,7 @@ namespace Chess_and_8_Queens
 
                 }
 
-            } while (ls.Count != 92);
+            } while (lsBoards.Count != 92);
 
             Console.WriteLine($"Finish Time {DateTime.Now}");
             Console.ReadKey();
@@ -197,9 +191,6 @@ namespace Chess_and_8_Queens
         /// <summary>
         /// возвращает массив с цифрами
         /// </summary>
-        /// <param name="startNumber"></param>
-        /// <param name="Finishlenght"></param>
-        /// <returns></returns>
         static int[] GetArrNumbers(int startNumber, int Finishlenght)
         {
             List<int> ls = new List<int>();
@@ -212,9 +203,10 @@ namespace Chess_and_8_Queens
         /// <summary>
         /// печатает шахматную доску в Console
         /// </summary>
-        /// <param name="arr"></param>
         static void Print(int[,] arr)
         {
+            Console.Write(new string('=', 28));
+            Console.WriteLine($"-> {lsBoards.Count}");
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 Console.Write($" {arr.GetLength(0) - i} ");
@@ -227,9 +219,10 @@ namespace Chess_and_8_Queens
                 }
                 Console.WriteLine();
             }
-            if (8 >= (arr.Length / arr.GetLength(0)))
+            
+            for (int i = 0; i < (arr.Length / arr.GetLength(0)); i++)
             {
-                for (int i = 0; i < (arr.Length / arr.GetLength(0)); i++)
+                if (8 >= (arr.Length / arr.GetLength(0)))
                 {
                     switch (i)
                     {
@@ -260,8 +253,16 @@ namespace Chess_and_8_Queens
 
                     }
                 }
+                else
+                {
+                    if (i <= 0)
+                        Console.Write($"    {(i + 1)} ");
+                    else
+                        Console.Write($" {(i+1)} ");
+                }
             }
-
+            Console.WriteLine();
+            Console.WriteLine();
         }
 
     }
